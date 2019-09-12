@@ -130,7 +130,7 @@ url: https://kotlinlang.ru/docs/reference/null-safety.html
 Такая цепочка вернёт *null* в случае, если одно из свойств имеет значение *null*.
 
 <!-- To perform a certain operation only for non-null values, you can use the safe call operator together with [`let`](/api/latest/jvm/stdlib/kotlin/let.html): -->
-Для проведения каких-либо операций над non-null значениями вы можете использовать [`let`](/api/latest/jvm/stdlib/kotlin/let.html)
+Для проведения каких-либо операций исключительно над non-null значениями вы можете использовать [`let`](/api/latest/jvm/stdlib/kotlin/let.html)
 оператор вместе с оператором безопасного вызова:
 
 ``` kotlin
@@ -187,7 +187,7 @@ url: https://kotlinlang.ru/docs/reference/null-safety.html
 <!-- The third option is for NPE-lovers. We can write `b!!`, and this will return a non-null value of `b` -->
 <!-- (e.g., a `String` in our example) or throw an NPE if `b` is null: -->
 
-Для любителей NPE сушествует ещё один способ. Мы можем написать `b!!` и это вернёт нам либо non-null значение `b`
+Для любителей NPE существует ещё один способ. Мы можем написать `b!!` и это вернёт нам либо non-null значение `b`
 (в нашем примере вернётся `String`), либо выкинет NPE:
 
 ``` kotlin

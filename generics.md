@@ -26,7 +26,7 @@ val box: Box<Int> = Box<Int>(1)
 ```
 
 <!-- But if the parameters may be inferred, e.g. from the constructor arguments or by some other means, one is allowed to omit the type arguments: -->
-Но если параметры могут выведены из контекста (в аргументах конструктора или в некоторых других случаях), можно опустить указание типа:
+Но если параметры могут быть выведены из контекста (в аргументах конструктора или в некоторых других случаях), можно опустить указание типа:
 
 ``` kotlin
 val box = Box(1) // 1 имеет тип Int, поэтому компилятор отмечает для себя, что у переменной box тип — Box<Int>
@@ -45,7 +45,7 @@ val box = Box(1) // 1 имеет тип Int, поэтому компилятор
 <!-- First, let's think about why Java needs those mysterious wildcards. The problem is explained in [Effective Java](http://www.oracle.com/technetwork/java/effectivejava-136174.html), Item 28: *Use bounded wildcards to increase API flexibility*. -->
 Для начала давайте подумаем на тему, зачем <b>Java</b> нужны эти странные маски. Проблема описана в книге [Effective Java](http://www.oracle.com/technetwork/java/effectivejava-136174.html), Item 28: *Use bounded wildcards to increase API flexibility*.
 <!-- First, generic types in Java are **invariant**, meaning that `List<String>` is **not** a subtype of `List<Object>`. -->
-Обобщающие типы в <b>Java</b>, прежде всего, **неизменны**. Это значит, что `List<String>` *не является* подтипом `List<Object>`.
+Прежде всего, обобщающие типы в <b>Java</b> являются **инвариантными** (ориг. invariant). Это означает, что `List<String>` **не является** подтипом `List<Object>`.
 <!-- Why so? If List was not **invariant**, it would have been no -->
 <!-- better than Java's arrays, since the following code would have compiled and caused an exception at runtime: -->
 Почему так? Если бы List был изменяемым, единственно лучшим решением для следующей задачи был бы массив, потому что после компиляции данный код вызвал бы ошибку в рантайме:
@@ -59,7 +59,7 @@ String s = strs.get(0); // !!! ClassCastException: не можем кастов�
 ```
 <!-- So, Java prohibits such things in order to guarantee run-time safety. But this has some implications. For example, consider the `addAll()` method from `Collection` -->
 <!-- interface. What's the signature of this method? Intuitively, we'd put it this way: -->
-Таким образом, <b>Java</b> запрешает подобные вещи, гаранитируя тем самым безопасность в период выполнения кода. Но у такого подхода есть свои последствия. Рассмотрим, например, метод `addAll` интерфейса `Collection`. Какова сигнатура данного метода? Интуитивно мы бы указали её таким образом:
+Таким образом, <b>Java</b> запрещает подобные вещи, гаранитируя тем самым безопасность в период выполнения кода. Но у такого подхода есть свои последствия. Рассмотрим, например, метод `addAll` интерфейса `Collection`. Какова сигнатура данного метода? Интуитивно мы бы указали её таким образом:
 
 ``` java
 // Java
@@ -93,7 +93,7 @@ interface Collection<E> ... {
 ```
 
 <!-- The **wildcard type argument** `? extends E` indicates that this method accepts a collection of objects of `E` *or some subtype of* `E`, not just `E` itself. -->
-**Маска для аргумента** `? extends E` указвает на то, что это метод принимает коллекцию объектов E *или некого типа унаследованного от* `E`, а не сам `E`.
+**Маска для аргумента** `? extends E` указывает на то, что этот метод принимает коллекцию объектов E *или некоего типа унаследованного от* `E`, а не сам `E`.
 <!-- This means that we can safely **read** `E`'s from items (elements of this collection are instances of a subclass of E), but **cannot write** to -->
 <!-- it since we do not know what objects comply to that unknown subtype of `E`. -->
 <!-- In return for this limitation, we have the desired behaviour: `Collection<String>` *is* a subtype of `Collection<? extends Object>`. -->
@@ -101,12 +101,12 @@ interface Collection<E> ... {
 Минуя это ограничение, мы достигаем желаемого результата: `Collection<String>`
 **является** подтипом `Collection<? extends Object>`.
  <!-- In "clever words", the wildcard with an **extends**\-bound (**upper** bound) makes the type **covariant**. -->
- Выражаясь более "умными словами", маска с **extends**-связкой (**верхнее** связывание) делает тип ковариантным (ориг. covariant).
+ Выражаясь более "умными словами", маска с **extends**-связкой (**верхнее** связывание) делает тип **ковариантным** (ориг. covariant).
 
 <!-- The key to understanding why this trick works is rather simple: if you can only **take** items from a collection, then using a collection of `String`s -->
 <!-- and reading `Object`s from it is fine. Conversely, if you can only _put_ items into the collection, it's OK to take a collection of -->
 <!-- `Object`s and put `String`s into it: in Java we have `List<? super String>` a **supertype** of `List<Object>`. -->
-Ключом к пониманию, почему этот трюк работает, является довольно простая мысль: использование коллекции `String`'ов и чтение из неё `Object`ов нормально только в случае, если  вы **берёте** элементы из коллекции. Наоборот, если вы только _вносите_ элементы в коллекцию, то нормально брать коллекцию `Object`'ов и помещать в неё `String`и: в <b>Java</b> есть `List<? super String>`, **супертип** `List<Object>`'a.
+Ключом к пониманию, почему этот трюк работает, является довольно простая мысль: использование коллекции `String`'ов и чтение из неё `Object`'ов нормально только в случае, если  вы **берёте** элементы из коллекции. Наоборот, если вы только _вносите_ элементы в коллекцию, то нормально брать коллекцию `Object`'ов и помещать в неё `String`'и: в <b>Java</b> есть `List<? super String>`, **супертип** `List<Object>`'a.
 
 <!-- The latter is called **contravariance**, and you can only call methods that take String as an argument on `List<? super String>` -->
 <!-- (e.g., you can call `add(String)` or `set(int, String)`), while -->
@@ -285,9 +285,9 @@ The safe way here is to define such a projection of the generic type, that every
 Kotlin предоставляет так называемый **star-projection** синтаксис для этого:
 
 <!--
-- For `Foo<out T>`, where `T` is a covariant type parameter with the upper bound `TUpper`, `Foo<*>` is equivalent to `Foo<out TUpper>`. It means that when the `T` is unknown you can safely *read* values of `TUpper` from `Foo<*>`.
+- For `Foo<out T : TUpper>`, where `T` is a covariant type parameter with the upper bound `TUpper`, `Foo<*>` is equivalent to `Foo<out TUpper>`. It means that when the `T` is unknown you can safely *read* values of `TUpper` from `Foo<*>`.
  - For `Foo<in T>`, where `T` is a contravariant type parameter, `Foo<*>` is equivalent to `Foo<in Nothing>`. It means there is nothing you can *write* to `Foo<*>` in a safe way when `T` is unknown.
- - For `Foo<T>`, where `T` is an invariant type parameter with the upper bound `TUpper`, `Foo<*>` is equivalent to `Foo<out TUpper>` for reading values and to `Foo<in Nothing>` for writing values.
+ - For `Foo<T : TUpper>`, where `T` is an invariant type parameter with the upper bound `TUpper`, `Foo<*>` is equivalent to `Foo<out TUpper>` for reading values and to `Foo<in Nothing>` for writing values.
  -->
  - Для `Foo<out T>`, где `T` — ковариантный параметризованный тип с верхней границей `TUpper`, `Foo<*>` является эквивалентом `Foo<out TUpper>`. Это значит, что когда `T` неизвестен, вы можете безопасно *читать* значения типа `TUpper` из `Foo<*>`.
  - Для `Foo<in T>`, где `T` — контравариантный параметризованный тип, `Foo<*>` является эквивалентом `Foo<in Nothing>`. Это значит, что вы не можете безопасно *писать* в `Foo<*>` при неизвестном `T`.
@@ -360,7 +360,7 @@ sort(listOf(HashMap<Int, String>())) // Ошибка: HashMap<Int, String> не 
 
 <!--The default upper bound (if none specified) is `Any?`. Only one upper bound can be specified inside the angle brackets.
 If the same type parameter needs more than one upper bound, we need a separate **where**\-clause:-->
-По умолчанию (если не указана явно) верняя граница — `Any?`. Только одна верхняя граница может быть указана в угловых скобках.
+По умолчанию (если не указана явно) верхняя граница — `Any?`. Только одна верхняя граница может быть указана в угловых скобках.
 В случае, если один параметризованный тип требует больше чем одной верхней границы, нам нужно использовать разделяющее **where**-условие:
 
 ``` kotlin

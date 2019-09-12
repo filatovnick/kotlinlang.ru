@@ -85,12 +85,12 @@ ints.map { it * 2 }
 
 Эти конвенции позволяют писать код в стиле [LINQ](http://msdn.microsoft.com/en-us/library/bb308959.aspx):
 ``` kotlin
-strings.filter { it.lenght == 5 }.sortBy { it }.map { it.toUpperCase() }
+strings.filter { it.length == 5 }.sortBy { it }.map { it.toUpperCase() }
 ```
 
 ### Символ подчеркивания для неиспользуемых переменных (since 1.1)
 
-Если параметр лямбды не используется, разрешено применять подчеркивание место его имени
+Если параметр лямбды не используется, разрешено применять подчеркивание вместо его имени
 
 ``` kotlin
 map.forEach { _, value -> println("$value!") }
@@ -149,6 +149,7 @@ fun <T> max(collection: Collection<T>, less: (T, T) -> Boolean): T? {
 val compare: (x: T, y: T) -> Int = ...
 ```
 
+<a name="lambda-expression-syntax"></a>
 <!--##Lambda Expression Syntax-->
 ## Синтаксис лямбда-выражений
 
@@ -217,7 +218,7 @@ ints.filter(fun(item) = item > 0)
 Аналогично и с типом возвращаемого значения: он вычисляется автоматически для функций-выражений или же должен быть определён вручную (если не является типом `Unit`) для анонимных функций, которые имеют в себе блок.
 
 <!--Note that anonymous function parameters are always passed inside the parentheses. The shorthand syntax allowing to leave the function outside the parentheses works only for lambda expressions.-->
-Обратите внимание, что параметры анонимных функций всегда заключены в скобки `{...}`. Приём, позволяющий оставлять параметры вне скобок, работает только с лямбда-выражениями. 
+Обратите внимание, что параметры анонимных функций всегда заключены в круглые скобки `(...)`. Приём, позволяющий оставлять параметры вне скобок, работает только с лямбда-выражениями. 
 
 <!--One other difference between lambda expressions and anonymous functions is the behavior of non-local returns. A return statement without a label always returns from the function declared with the fun keyword. This means that a return inside a lambda expression will return from the enclosing function, whereas a return inside an anonymous function will return from the anonymous function itself.-->
 Одним из отличий лямбда-выражений от анонимных функций является поведение оператора `return` ([non-local returns](inline-functions.html#non-local-returns)). Слово `return` , не имеющее метки (`@`), всегда возвращается из функции, объявленной ключевым словом `fun`. Это означает, что `return` внутри лямбда-выражения возвратит выполнение к функции, включающей в себя это лямбда-выражение. Внутри анонимных функций оператор `return`, в свою очередь, выйдет, собственно, из анонимной функции.
@@ -226,7 +227,7 @@ ints.filter(fun(item) = item > 0)
 ## Замыкания
 
 <!--A lambda expression or anonymous function (as well as a [local function](http://kotlinlang.org/docs/reference/functions.html#local-functions) and an [object expression](http://kotlinlang.org/docs/reference/object-declarations.html#object-expressions)) can access its closure, i.e. the variables declared in the outer scope. Unlike Java, the variables captured in the closure can be modified:-->
-Лямбда-выражение или анонимная функция (так же, как и [локальная функция](functions.html#local-functions) или [object expression](object-declarations.html#object-expressions)) имеет доступ к своему замыканию, то есть к переменным, объявленным вне этого выражения или функции. В отличае от Java, переменные, захваченные в замыкании, могут быть изменены:
+Лямбда-выражение или анонимная функция (так же, как и [локальная функция](functions.html#local-functions) или [object expression](object-declarations.html#object-expressions)) имеет доступ к своему замыканию, то есть к переменным, объявленным вне этого выражения или функции. В отличие от Java, переменные, захваченные в замыкании, могут быть изменены:
 
 ``` kotlin
 var sum = 0

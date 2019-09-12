@@ -31,6 +31,10 @@
     "inline-functions",
     "coroutines"
   ],
+  "Мультиплатформенное программирование": [
+    "multiplatform",
+    "building-mpp-with-gradle"
+    ],  
   "Прочее": [
     "multi-declarations",
     "collections",
@@ -44,9 +48,26 @@
     "annotations",
     "reflection",
     "type-safe-builders",
-    "type-aliases"
+    "type-aliases"    
+  ],
+  "Справочник": [
+    "keyword-reference"
+  ],
+  "Инструменты": [
+    "kotlin-doc",
+    "kapt",
+    "using-maven",
+    "using-ant",
+    "kotlin-osgi",
+    "compiler-plugins",
+    "using-gradle"
+  ],
+  "Совместимость с Java": [
+    "java-interop",
+    "java-to-kotlin-interop"
   ],
   "ЧаВо": [
+    "faq",
     "comparison-to-java"
   ],
   "Редактору": [
